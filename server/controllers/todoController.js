@@ -1,5 +1,6 @@
 const Todo = require("../models/Todo");
 
+
 // 🔹 GET all
 exports.getTodos = async (req, res) => {
   const todos = await Todo.find();
@@ -7,8 +8,12 @@ exports.getTodos = async (req, res) => {
 };
 
 // 🔹 POST
+
 exports.createTodo = async (req, res) => {
-  const newTodo = new Todo({ task: req.body.task });
+  const newTodo = new Todo({
+    task: req.body.task,
+    description: req.body.description, // naya field
+  });
   const savedTodo = await newTodo.save();
   res.json(savedTodo);
 };
@@ -17,7 +22,11 @@ exports.createTodo = async (req, res) => {
 exports.updateTodo = async (req, res) => {
   const updated = await Todo.findByIdAndUpdate(
     req.params.id,
-    { completed: req.body.completed },
+    {
+      task: req.body.task,
+      description: req.body.description,
+      completed: req.body.completed
+    },
     { new: true }
   );
   res.json(updated);
